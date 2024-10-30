@@ -12,11 +12,11 @@ class Database {
     public function __construct()
     {
         // data source name
-        $dsn = 'mysql:host=' . $this->host . 'dbname=' $this->db_name ;
+        $dsn = 'mysql:host=' . $this->host . ';dbname=' . $this->db_name ;
 
         $option = [
             PDO::ATTR_PERSISTENT => true,
-            PDO::ATTR_ERRORMODE => PDO::ERRORMODE_EXCEPTION
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
         ];
 
         try {
@@ -32,11 +32,10 @@ class Database {
     public function query($query)
     {
         $this->stmt = $this->dbh->prepare($query);
-
-
+        return $this; // Tambahkan ini untuk chaining
     }
 
-    public bind($param, $value, $type = null)
+    public function bind($param, $value, $type = null)
     {
         if(is_null($type)){
             switch( true){
@@ -59,7 +58,7 @@ class Database {
 
     public function execute()
     {
-        $this->stmt->execute;
+        return $this->stmt->execute();
     }
 
     public function resultSet(){
